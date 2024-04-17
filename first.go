@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"net/http"
 	"os"
 )
 
@@ -78,6 +79,9 @@ func main() {
 
 	// IO
 	writeFile()
+
+	// server
+	webServer()
 }
 
 func changeValue(x *int) {
@@ -185,7 +189,7 @@ func writeFile() {
 		log.Fatal()
 	}
 
-	file.WriteString("Hello")
+	file.WriteString("aaaaaaaaa")
 	file.Close()
 
 	stream, err := os.ReadFile("sample.txt")
@@ -197,4 +201,18 @@ func writeFile() {
 	s1 := string(stream)
 
 	println(s1)
+}
+
+func webServer() {
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/Hello", handler2)
+	http.ListenAndServe(":8080", nil)
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello 1")
+}
+
+func handler2(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello 2")
 }
